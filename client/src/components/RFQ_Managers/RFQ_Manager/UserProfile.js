@@ -3,7 +3,7 @@ import FsLightbox from "fslightbox-react";
 import { allUsersRoute, host } from "../../../utils/APIRoutes";
 import axios from "axios";
 import { jsPDF } from "jspdf";
-
+import Base64Downloader from 'react-base64-downloader';
 import { io } from "socket.io-client";
 import styled from "styled-components";
 import CommentForm from "../../Form/CommentForm";
@@ -202,7 +202,7 @@ const UserProfile = () => {
   console.log("i love to work",data.map((tn) => tn.rfq_id));
   const getattacments = async () => {
     console.log("clclclclclcclcl",params.id)
-    let result = await fetch(`http://localhost:5005/attachments`);
+    let result = await fetch(`http://localhost:5005/attachments/search/${params.id}`);
     result = await result.json();
     setatt(result);
     console.log(att)
@@ -216,7 +216,7 @@ const UserProfile = () => {
     
     doc.text('name', 1, 1);
   
-    doc.save("PO.pdf");
+    doc.save("PO");
   }
   // setuserid(data.map((tn) => tn.rfq_id));
   // console.log(
@@ -640,9 +640,10 @@ const UserProfile = () => {
                       <ul className="list-inline p-0 m-0">
                         <li>
                           <div className="timeline-dots timeline-dot1 border-primary text-primary"></div>
-                          <h6 className="float-left mb-1">{asd.title}</h6>
+                          <a href={asd.files} download> <h6 className="float-left mb-1">{asd.title}</h6></a>
+                          {/* <a href={postData.selectedFile} download> <h6>downloaad file</h6> </a> */}
                           <small className="float-right mt-1">
-                            {asd.Dates}
+                           
                           </small>
                           <div className="d-inline-block w-100">
                             <p>
@@ -670,7 +671,7 @@ const UserProfile = () => {
                                 {data.map((item) => (
                                    <Form.Group className="form-group">
                                         <Form.Label  htmlFor="exampleInputText1">to: </Form.Label>
-                                        <Form.Control type="text"  id="exampleInputText1" name="to" value={sendpo.to} onChange={inputhandeler}/>
+                                        <Form.Control type="text"  id="exampleInputText1" name="to" defaultValue={sendpo.to}  onChange={inputhandeler}/>
                                     </Form.Group>
                                 ))}
                                     <Form.Group className="form-group">
@@ -683,7 +684,7 @@ const UserProfile = () => {
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Label  className="custom-file-input"> attach P.O file</Form.Label>
-                                        <Form.Control  type="file" id="customFile1"onClick={handleattachments} name="file"/>
+                                        <Form.Control  type="file" id="customFile1"onChange={handleattachments} name="file"/>
                                     </Form.Group>
                                     <Button variant="btn btn-primary"type="button" onClick={sendEmail}>Send</Button>{' '}
                                 </Form>
@@ -964,7 +965,7 @@ const UserProfile = () => {
                                 {data.map((item) => (
                                    <Form.Group className="form-group">
                                         <Form.Label  htmlFor="exampleInputText1">to: </Form.Label>
-                                        <Form.Control type="text"  id="exampleInputText1" name="to" value={item.to} onChange={inputhandeler}/>
+                                        <Form.Control type="text"  id="exampleInputText1" name="to" value={sendpo.to}onChange={inputhandeler}/>
                                     </Form.Group>
                                 ))}
                                     <Form.Group className="form-group">
@@ -977,7 +978,7 @@ const UserProfile = () => {
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Label  className="custom-file-input"> attach P.O file</Form.Label>
-                                        <Form.Control  type="file" id="customFile1"onClick={handleattachments} name="file"/>
+                                        <Form.Control  type="file" id="customFile1"onChange={handleattachments} name="file"/>
                                     </Form.Group>
                                     <br/>
                                     <Button variant="btn btn-primary"type="button" onClick={sendEmail}>Send</Button>{' '}

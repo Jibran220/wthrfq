@@ -25,13 +25,8 @@ export const sendEmail = async (
     replyTo: reply_to,
     subject: subjecta,
     html: message,
-    attachments: [
-      {
-        // filename: filename,
-          path:`public/images/${filename}`,
-         
-      }
-  ]
+    
+  
   };
 
   // Send Email
